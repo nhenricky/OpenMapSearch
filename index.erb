@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Mapa Ruby</title>
+  <link rel="stylesheet" href="/style.css">
+</head>
+
+<body>
+
+  <h1>Pesquisar lugar</h1>
+
+  <form action="/buscar" method="get">
+    <input
+      type="text"
+      name="local"
+      placeholder="Digite uma cidade ou endereço"
+      required
+    >
+
+    <button type="submit">Pesquisar</button>
+  </form>
+
+  <% if @resultado && !@resultado.empty? %>
+
+    <% lugar = @resultado.first %>
+
+    <h2><%= lugar["display_name"] %></h2>
+
+    <p>
+      Latitude: <%= lugar["lat"] %><br>
+      Longitude: <%= lugar["lon"] %>
+    </p>
+
+    <iframe
+      width="100%"
+      height="500"
+      frameborder="0"
+      src="https://www.openstreetmap.org/export/embed.html?bbox=<%= lugar["lon"].to_f - 0.01 %>,<%= lugar["lat"].to_f - 0.01 %>,<%= lugar["lon"].to_f + 0.01 %>,<%= lugar["lat"].to_f + 0.01 %>&layer=mapnik&marker=<%= lugar["lat"] %>,<%= lugar["lon"] %>">
+    </iframe>
+
+  <% elsif @resultado %>
+
+    <p>Lugar não encontrado.</p>
+
+  <% end %>
+
+</body>
+</html>
